@@ -1,0 +1,51 @@
+name: ARM Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      runtime:
+        description: 'runtime'
+        type: choice
+        options:
+          - dotnet8_aot_on_provided_al2
+          - dotnet8_aot_on_provided_al2023
+        required: true
+      architecture:
+        description: 'architecture'
+        type: choice
+        options:
+          - x86_64
+          - arm64
+        required: true
+
+jobs:
+  arm-build:
+
+    name: "${{ inputs.architecture }} Build"
+    runs-on: "ubuntu-latest"
+
+    permissions:
+      contents: read
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - if: inputs.architecture == 'arm64'
+        name: Setup QEMU (docker)
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: 'arm64'
+
+      - name: Setup Buildx (docker)
+        uses: docker/setup-buildx-action@v3
+
+      - name: Export code.zip
+        run: ./s3-uploader/runtimes/${{ inputs.runtime }}/build.sh ${{ inputs.runtime }} ${{ inputs.architecture }}
+
+      - name: Save code.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: code_${{ inputs.architecture }}.zip
+          path: code_${{ inputs.architecture }}.zip
