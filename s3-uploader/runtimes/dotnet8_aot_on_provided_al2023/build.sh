@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DIR_NAME="./runtimes/$1"
 
 if [ $2 = "x86_64" ]; then
