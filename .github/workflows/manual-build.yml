@@ -43,11 +43,10 @@ jobs:
 
       - name: Run script
         run: |
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           cd ./s3-uploader && ./runtimes/${{ inputs.runtime }}/build.sh ${{ inputs.runtime }} ${{ inputs.architecture }}
 
       - name: Save code.zip
         uses: actions/upload-artifact@v4
         with:
           name: code_${{ inputs.architecture }}.zip
-          path: code_${{ inputs.architecture }}.zip
+          path: ./s3-uploader/runtimes/${{ inputs.runtime }}/code_${{ inputs.architecture }}.zip
