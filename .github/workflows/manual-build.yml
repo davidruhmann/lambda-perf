@@ -19,7 +19,7 @@ on:
         required: true
 
 jobs:
-  arm-build:
+  build:
 
     name: "${{ inputs.architecture }} Build"
     runs-on: "ubuntu-latest"
