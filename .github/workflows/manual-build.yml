@@ -1,4 +1,4 @@
-name: Manual Build
+name: manual
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ on:
 jobs:
   build:
 
-    name: "${{ inputs.architecture }} Build"
+    name: "${{ inputs.runtime }} ${{ inputs.architecture }} build"
     runs-on: "ubuntu-latest"
 
     permissions:
